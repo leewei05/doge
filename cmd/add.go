@@ -22,6 +22,10 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"reflect"
+
 	c "github.com/leewei05/doge/common"
 	"github.com/spf13/cobra"
 )
@@ -36,6 +40,20 @@ var addCmd = &cobra.Command{
 			return err
 		}
 
+		todo := args[0]
+		fmt.Println(todo)
+		fmt.Println(reflect.TypeOf(todo))
+
+		f, err := os.OpenFile("/Users/leewei/dev/doge/cmd/test.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		if err != nil {
+			panic(err)
+		}
+
+		defer f.Close()
+
+		if _, err = f.WriteString(todo); err != nil {
+			panic(err)
+		}
 		return nil
 	},
 }
