@@ -22,42 +22,40 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"os"
+	"fmt"
+	"io/ioutil"
 
-	c "github.com/leewei05/doge/common"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
 
-// addCmd represents the add command
-var addCmd = &cobra.Command{
-	Use:   "add",
-	Short: "add a TODO to TODO list",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		err := c.IsValidArgs(args)
-		if err != nil {
-			return err
-		}
+// listCmd represents the list command
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list all TODOs from TODO list",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("list called")
 
 		home, err := homedir.Dir()
 		cobra.CheckErr(err)
 		dogeDir := home + "/.doge/"
-		todo := args[0]
 
-		f, err := os.OpenFile(dogeDir+"test.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-		if err != nil {
-			panic(err)
-		}
-
-		defer f.Close()
-
-		if _, err = f.WriteString(todo + "\n"); err != nil {
-			panic(err)
-		}
-		return nil
+		dat, err := ioutil.ReadFile(dogeDir + "test.txt")
+		cobra.CheckErr(err)
+		fmt.Print(string(dat))
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(listCmd)
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
