@@ -1,6 +1,10 @@
 package common
 
-import "github.com/pkg/errors"
+import (
+	"time"
+
+	"github.com/pkg/errors"
+)
 
 func IsValidArgs(args []string) error {
 	if len(args) > 1 {
@@ -8,4 +12,8 @@ func IsValidArgs(args []string) error {
 	}
 
 	return nil
+}
+
+func CurrentDate() string {
+	return time.Now().Format("2006-01-02")
 }
