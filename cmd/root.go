@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 
+	c "github.com/leewei05/doge/common"
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -40,16 +41,8 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	home, err := homedir.Dir()
-	cobra.CheckErr(err)
-	dogeDir := home + "/.doge/"
-
-	if _, err := os.Stat(dogeDir); os.IsNotExist(err) {
-		err := os.Mkdir(dogeDir, 0755)
-		if err != nil {
-			cobra.CheckErr(err)
-		}
-	}
+	// Check if doge directory is created
+	c.CheckTodoDir()
 }
 
 // initConfig reads in config file and ENV variables if set.
