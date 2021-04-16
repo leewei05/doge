@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	homedir "github.com/mitchellh/go-homedir"
+	c "github.com/leewei05/doge/common"
 	"github.com/spf13/cobra"
 )
 
@@ -34,13 +34,10 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list all TODOs from TODO list",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
-
-		home, err := homedir.Dir()
+		todoFile, err := c.Path2Todo()
 		cobra.CheckErr(err)
-		dogeDir := home + "/.doge/"
 
-		dat, err := ioutil.ReadFile(dogeDir + "test.txt")
+		dat, err := ioutil.ReadFile(todoFile)
 		cobra.CheckErr(err)
 		fmt.Print(string(dat))
 	},
