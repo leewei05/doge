@@ -25,7 +25,6 @@ import (
 	"os"
 
 	c "github.com/leewei05/doge/common"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 )
 
@@ -39,12 +38,11 @@ var addCmd = &cobra.Command{
 			return err
 		}
 
-		home, err := homedir.Dir()
+		todoFile, err := c.Path2Todo()
 		cobra.CheckErr(err)
-		dogeDir := home + "/.doge/"
 		todo := args[0]
 
-		f, err := os.OpenFile(dogeDir+"test.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		f, err := os.OpenFile(todoFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		if err != nil {
 			panic(err)
 		}
