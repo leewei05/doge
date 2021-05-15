@@ -22,8 +22,10 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
+	"log"
+	"os"
 
 	c "github.com/leewei05/doge/common"
 	"github.com/spf13/cobra"
@@ -37,22 +39,41 @@ var listCmd = &cobra.Command{
 		todoFile, err := c.Path2Todo()
 		cobra.CheckErr(err)
 
-		dat, err := ioutil.ReadFile(todoFile)
-		cobra.CheckErr(err)
-		fmt.Print(string(dat))
+		if ok := isFileEmpty(todoFile); ok {
+			fmt.Println("Empty Todo list")
+			return
+		}
+
+		file, err := os.Open(todoFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func isFileEmpty(file string) bool {
+	fi, err := os.Stat(file)
+	if err != nil {
+		cobra.CheckErr(err)
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
+	if fi.Size() == 0 {
+		return true
+	}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	return false
 }

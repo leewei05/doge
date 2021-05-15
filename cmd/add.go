@@ -31,7 +31,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "add a TODO to TODO list",
+	Short: "add a TODO",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := c.IsValidArgs(args)
 		if err != nil {
