@@ -43,6 +43,8 @@ func init() {
 
 	// Check if doge directory is created
 	c.CheckTodoDir()
+	err := c.CreateDefaultTodoFile()
+	cobra.CheckErr(err)
 }
 
 // initConfig reads in config file and ENV variables if set.

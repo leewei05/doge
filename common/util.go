@@ -37,6 +37,22 @@ func Path2Todo() (s string, err error) {
 	return pathTodo, nil
 }
 
+func CreateDefaultTodoFile() error {
+	todoFile, err := Path2Todo()
+	if err != nil {
+		return err
+	}
+
+	f, err := os.OpenFile(todoFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	return nil
+}
+
 func CheckTodoDir() {
 	home, err := homedir.Dir()
 	cobra.CheckErr(err)
