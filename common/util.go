@@ -14,6 +14,11 @@ var (
 )
 
 func IsValidArgs(args []string) error {
+	if len(args) == 0 {
+		return errors.New("No todo is provided")
+	}
+
+	// FIXME: can add multiple tasks at once
 	if len(args) > 1 {
 		return errors.New("can only add one task at a time")
 	}
