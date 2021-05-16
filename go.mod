@@ -3,7 +3,7 @@ module github.com/leewei05/doge
 go 1.13
 
 require (
-	github.com/benbjohnson/clock v1.1.0
+	github.com/google/uuid v1.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/cobra v1.1.3
