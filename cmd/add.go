@@ -22,9 +22,13 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"encoding/json"
 	"os"
+	"time"
 
+	"github.com/google/uuid"
 	c "github.com/leewei05/doge/common"
+	"github.com/leewei05/doge/todo"
 	"github.com/spf13/cobra"
 )
 
@@ -40,7 +44,7 @@ var addCmd = &cobra.Command{
 
 		todoFile, err := c.Path2Todo()
 		cobra.CheckErr(err)
-		todo := args[0]
+		out := newTodo(args[0])
 
 		f, err := os.OpenFile(todoFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		if err != nil {
@@ -49,7 +53,7 @@ var addCmd = &cobra.Command{
 
 		defer f.Close()
 
-		if _, err = f.WriteString(todo + "\n"); err != nil {
+		if _, err = f.WriteString(out + "\n"); err != nil {
 			panic(err)
 		}
 		return nil
@@ -58,4 +62,21 @@ var addCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+}
+
+func newTodo(name string) string {
+	todo := &todo.Todo{
+		ID:             uuid.New(),
+		Status:         todo.STATUS_ONGOING,
+		Name:           name,
+		Description:    "",
+		CreateTime:     time.Now(),
+		LastUpdateTime: time.Now(),
+	}
+	out, err := json.Marshal(todo)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(out)
 }

@@ -14,7 +14,7 @@ type Todo struct {
 	// Status indicates the working status for todo
 	Status int
 	// Name is the name of a todo
-	Name int
+	Name string
 	// Description is the context of a todo
 	Description string
 	// CreateTime is the creation time of a todo
