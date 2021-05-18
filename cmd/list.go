@@ -23,11 +23,13 @@ package cmd
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 
 	c "github.com/leewei05/doge/common"
+	"github.com/leewei05/doge/todo"
 	"github.com/spf13/cobra"
 )
 
@@ -52,7 +54,10 @@ var listCmd = &cobra.Command{
 
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
-			fmt.Println(scanner.Text())
+			t := scanner.Text()
+			var todo todo.Todo
+			json.Unmarshal([]byte(t), &todo)
+			fmt.Println(todo)
 		}
 
 		if err := scanner.Err(); err != nil {
